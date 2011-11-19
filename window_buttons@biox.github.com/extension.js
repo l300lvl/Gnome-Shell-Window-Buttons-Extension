@@ -76,13 +76,17 @@ WindowButtons.prototype = {
 		
 		theme = this._settings.get_string(WA_THEME);
 		
-		global.log("Loading theme " + theme)
-		
 		let themeContext = St.ThemeContext.get_for_stage(global.stage);
 		let currentTheme = themeContext.get_theme();
 		
-		currentTheme.load_stylesheet(extensionPath + '/themes/' + theme + '/style.css');
+		let cssPath = extensionPath + '/themes/' + theme + '/style.css'
+		let cssFile = Gio.file_new_for_path(cssPath);
 		
+		if (!cssFile.query_exists(null)) {
+			cssPath = extensionPath + '/themes/default/style.css'
+		}
+		
+		currentTheme.load_stylesheet(cssPath);
 	},
 	
 	_reDisplay: function() {
