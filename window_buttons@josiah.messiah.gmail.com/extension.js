@@ -49,16 +49,28 @@ WindowButtons.prototype = {
 		} else if (pinch == 2) {
 			order = GConf.Client.get_default().get_string("/apps/metacity/general/button_layout");
 		}
+		
+		//Connect to setting change events
+		this._settings.connect('changed::'+WA_THEME, Lang.bind(this, this._loadTheme));
+		this._settings.connect('changed::'+WA_ORDER, Lang.bind(this, this._reDisplay));
+		this._settings.connect('changed::'+WA_PINCH, Lang.bind(this, function() {
+			global.log("Order change")
+			pinch = this._settings.get_enum(WA_PINCH);
+			this._reDisplay();
+				}))
 
+		//Create boxes for the buttons
 		this.rightActor = new St.Bin({ style_class: 'box-bin panel-button', reactive: false, track_hover: false });
 		this.rightBox = new St.BoxLayout({ style_class: 'button-box' });
 		this.leftActor = new St.Bin({ style_class: 'box-bin panel-button', reactive: false, track_hover: false });
 		this.leftBox = new St.BoxLayout({ style_class: 'button-box' });
+		//Add boxes to bins
+		this.rightActor.add_actor(this.rightBox);
+		this.leftActor.add_actor(this.leftBox);
 
-		this.screen = new Wnck.Screen.get_default()
+		this.screen = new Wnck.Screen.get_default();
 
 		this._loadTheme();
-
 		this._display();
 		
 	},
@@ -66,11 +78,38 @@ WindowButtons.prototype = {
 
 	_loadTheme: function() {
 		
+		theme = this._settings.get_string(WA_THEME);
+		
+		global.log("Loading theme " + theme)
+		
 		let themeContext = St.ThemeContext.get_for_stage(global.stage);
 		let currentTheme = themeContext.get_theme();
 		
 		currentTheme.load_stylesheet(extensionPath + '/themes/' + theme + '/style.css');
 		
+	},
+	
+	_reDisplay: function() {
+		
+		global.log("Redisplaying")
+		
+		let boxes = [ this.leftBox, this.rightBox ]
+		for (box in boxes) {
+			let children = boxes[box].get_children()
+			for ( let i=0; i<children.length; ++i ) {
+					children[i].destroy();
+			}
+		}
+		
+		if (pinch == 0) {
+			order = this._settings.get_string(WA_ORDER);
+		} else if (pinch == 1) {
+			order = GConf.Client.get_default().get_string("/desktop/gnome/shell/windows/button_layout");
+		} else if (pinch == 2) {
+			order = GConf.Client.get_default().get_string("/apps/metacity/general/button_layout");
+		}
+		
+        this._display();
 	},
 
 	_display: function() {
@@ -78,6 +117,8 @@ WindowButtons.prototype = {
 		let buttonlist = { 	minimize : ['Minimize', this._minimize], 
 							maximize : ['Maximize', this._maximize], 
 							close    : ['Close', this._close] } ;
+		
+		
 		
 		let orders = order.split(':')
 		let orderLeft  = orders[0].split(',')
@@ -101,9 +142,6 @@ WindowButtons.prototype = {
 			}
 		}
 		
-		this.rightActor.add_actor(this.rightBox)
-		this.leftActor.add_actor(this.leftBox)
-
 	},
 
 	
