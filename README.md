@@ -33,7 +33,8 @@ or
 To-do
 -----
 
+- Check for theme matching metacity theme
 - Add unfocused window support for better theming
 - Add option to handle only maximized windows
-- Add option to hide is there are no maximized windows
+- Add option to hide if there are no maximized windows
 - Moar themes!

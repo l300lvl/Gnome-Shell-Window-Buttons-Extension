@@ -15,6 +15,7 @@ const WA_SETTINGS_SCHEMA = 'org.gnome.shell.extensions.window-buttons';
 const WA_PINCH = 'pinch';
 const WA_ORDER = 'order';
 const WA_THEME = 'theme';
+const WA_DOGTK = 'dogtk';
 
 // Keep enums in sync with GSettings schemas
 
@@ -27,6 +28,7 @@ const PinchType = {
 
 let pinch = 1
 let order = ":minimize,maximize,close"
+let dogtk = false
 let theme = "default"
 
 
@@ -38,23 +40,14 @@ WindowButtons.prototype = {
 
 	_init: function() {
 		
+		// Load wnck windows
+		this.screen = new Wnck.Screen.get_default();
+
 		//Load Settings
 		this._settings = new Gio.Settings({ schema: WA_SETTINGS_SCHEMA });
-        theme = this._settings.get_string(WA_THEME);
-        pinch = this._settings.get_enum(WA_PINCH);
-        if (pinch == 0) {
-			order = this._settings.get_string(WA_ORDER);
-		} else if (pinch == 1) {
-			order = GConf.Client.get_default().get_string("/desktop/gnome/shell/windows/button_layout");
-		} else if (pinch == 2) {
-			order = GConf.Client.get_default().get_string("/apps/metacity/general/button_layout");
-		}
-		
-		//Connect to setting change events
-		//(changing themes is not working properly yet)
-		//this._settings.connect('changed::'+WA_THEME, Lang.bind(this, this._loadTheme));
-		this._settings.connect('changed::'+WA_ORDER, Lang.bind(this, this._reDisplay));
-		this._settings.connect('changed::'+WA_PINCH, Lang.bind(this, function() { pinch = this._settings.get_enum(WA_PINCH); this._reDisplay(); }))
+
+		//Load Theme
+		this._loadTheme();
 
 		//Create boxes for the buttons
 		this.rightActor = new St.Bin({ style_class: 'box-bin panel-button', reactive: false, track_hover: false });
@@ -64,34 +57,56 @@ WindowButtons.prototype = {
 		//Add boxes to bins
 		this.rightActor.add_actor(this.rightBox);
 		this.leftActor.add_actor(this.leftBox);
-
-		this.screen = new Wnck.Screen.get_default();
-
-		this._loadTheme();
+		//Add button to boxes
 		this._display();
 		
+		//Connect to setting change events
+		this._settings.connect('changed::'+WA_DOGTK, Lang.bind(this, this._loadTheme));
+		this._settings.connect('changed::'+WA_THEME, Lang.bind(this, this._loadTheme));
+		this._settings.connect('changed::'+WA_ORDER, Lang.bind(this, this._display));
+		this._settings.connect('changed::'+WA_PINCH, Lang.bind(this, this._display))
 	},
 	
 
 	_loadTheme: function() {
 		
-		theme = this._settings.get_string(WA_THEME);
+		let oldtheme = theme
+		
+		dogtk = this._settings.get_boolean(WA_DOGTK);
+		
+		if (dogtk) {
+			// Get GTK theme name
+//			theme = new imports.gi.Gio.Settings({schema: "org.gnome.desktop.interface"}).get_string("gtk-theme")
+			// Get Mutter / Metacity theme name
+			theme = GConf.Client.get_default().get_string("/apps/metacity/general/theme");
+		} else {
+			theme = this._settings.get_string(WA_THEME);
+		}
 		
 		let themeContext = St.ThemeContext.get_for_stage(global.stage);
 		let currentTheme = themeContext.get_theme();
 		
 		let cssPath = extensionPath + '/themes/' + theme + '/style.css'
 		let cssFile = Gio.file_new_for_path(cssPath);
-		
-		if (!cssFile.query_exists(null)) {
-			cssPath = extensionPath + '/themes/default/style.css'
+		if (!cssFile.query_exists(null)) { cssPath = extensionPath + '/themes/default/style.css' }
+
+		let newTheme = new St.Theme ({application_stylesheet: Main._cssStylesheet});
+		newTheme.load_stylesheet(cssPath);
+
+		if (currentTheme) {
+			let customStylesheets = currentTheme.get_custom_stylesheets();
+			for (let i = 0; i < customStylesheets.length; i++) {
+				if (customStylesheets[i] != extensionPath + '/themes/' + oldtheme + '/style.css') {
+					newTheme.load_stylesheet(customStylesheets[i]);
+				}
+			}
 		}
 		
-		currentTheme.load_stylesheet(cssPath);
+		themeContext.set_theme(newTheme);
 	},
-	
-	_reDisplay: function() {
-		
+
+	_display: function() {
+
 		let boxes = [ this.leftBox, this.rightBox ]
 		for (box in boxes) {
 			let children = boxes[box].get_children()
@@ -100,6 +115,8 @@ WindowButtons.prototype = {
 			}
 		}
 		
+		pinch = this._settings.get_enum(WA_PINCH);
+
 		if (pinch == 0) {
 			order = this._settings.get_string(WA_ORDER);
 		} else if (pinch == 1) {
@@ -107,11 +124,6 @@ WindowButtons.prototype = {
 		} else if (pinch == 2) {
 			order = GConf.Client.get_default().get_string("/apps/metacity/general/button_layout");
 		}
-		
-        this._display();
-	},
-
-	_display: function() {
 
 		let buttonlist = { 	minimize : ['Minimize', this._minimize], 
 							maximize : ['Maximize', this._maximize], 

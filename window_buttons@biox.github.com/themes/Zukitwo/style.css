@@ -26,11 +26,11 @@
 }
 
 .minimize:hover {
-    border-color: rgba(209,174,51,1);
+    border-color: rgba(209,174,51,0.75);
 }
 
 .minimize:active {
-    border-color: rgba(202,169,49,1);
+    border-color: rgba(202,169,49,0.75);
 }
 
 .maximize {
@@ -38,11 +38,11 @@
 }
 
 .maximize:hover {
-    border-color: rgba(80,209,51,1);
+    border-color: rgba(80,209,51,0.75);
 }
 
 .maximize:active {
-    border-color: rgba(85,179,64,1);
+    border-color: rgba(85,179,64,0.75);
 }
 
 .close {
@@ -50,7 +50,7 @@
 }
 
 .close:hover {
-    border-color: rgba(189,46,46,1);
+    border-color: rgba(189,46,46,0.75);
 }
 
 .close:active {
