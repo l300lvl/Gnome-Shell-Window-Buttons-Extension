@@ -16,7 +16,7 @@ Installation
 
 Copy the schema file to _/usr/share/glib-2.0/schemas_
 
-	# cp org.gnome.shell.extensions.window-buttons.gschema.xml /usr/share/glib-2.0/schemas
+	# cp org.gnome.shell.extensions.window-buttons.gschema.xml /usr/share/glib-2.0/schemas/
 
 Install schema:
 
@@ -24,11 +24,11 @@ Install schema:
 
 Install the extension itself
 
-	$ cp window_buttons@biox.github.com ~/.local/share/gnome-shell/extensions
+	$ cp window_buttons@biox.github.com ~/.local/share/gnome-shell/extensions/
 
 or
 
-	# cp window_buttons@biox.github.com /usr/share/gnome-shell/extensions
+	# cp window_buttons@biox.github.com /usr/share/gnome-shell/extensions/
 
 To-do
 -----
