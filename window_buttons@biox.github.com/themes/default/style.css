@@ -1,16 +1,16 @@
-.box-bin { }
+.box-bin { 
+}
 
 .button-box {
-    spacing: 0px;
+    spacing: 4px;
 }
 
 .window-button {
     width: 24px;
-    height: 24px;
+    height: 20px;
 }
 
 .window-button:hover {
-
 }
 
 .minimize {

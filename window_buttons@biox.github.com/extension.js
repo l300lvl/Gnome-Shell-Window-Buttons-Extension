@@ -7,6 +7,7 @@ const Wnck = imports.gi.Wnck;
 const Main = imports.ui.main;
 const Gio = imports.gi.Gio;
 const GConf = imports.gi.GConf;
+const PanelMenu = imports.ui.panelMenu;
 
 let extensionPath = ""
 
@@ -46,25 +47,27 @@ WindowButtons.prototype = {
 		//Load Settings
 		this._settings = new Gio.Settings({ schema: WA_SETTINGS_SCHEMA });
 
-		//Load Theme
-		this._loadTheme();
-
 		//Create boxes for the buttons
-		this.rightActor = new St.Bin({ style_class: 'box-bin panel-button', reactive: false, track_hover: false });
+		this.rightActor = new St.Bin({ style_class: 'box-bin'});
 		this.rightBox = new St.BoxLayout({ style_class: 'button-box' });
-		this.leftActor = new St.Bin({ style_class: 'box-bin panel-button', reactive: false, track_hover: false });
+		this.leftActor = new St.Bin({ style_class: 'box-bin'});
 		this.leftBox = new St.BoxLayout({ style_class: 'button-box' });
+		
 		//Add boxes to bins
 		this.rightActor.add_actor(this.rightBox);
 		this.leftActor.add_actor(this.leftBox);
 		//Add button to boxes
 		this._display();
 		
+		//Load Theme
+		this._loadTheme();
+		
 		//Connect to setting change events
 		this._settings.connect('changed::'+WA_DOGTK, Lang.bind(this, this._loadTheme));
 		this._settings.connect('changed::'+WA_THEME, Lang.bind(this, this._loadTheme));
 		this._settings.connect('changed::'+WA_ORDER, Lang.bind(this, this._display));
 		this._settings.connect('changed::'+WA_PINCH, Lang.bind(this, this._display))
+		
 	},
 	
 
@@ -82,13 +85,16 @@ WindowButtons.prototype = {
 		} else {
 			theme = this._settings.get_string(WA_THEME);
 		}
-		
-		let themeContext = St.ThemeContext.get_for_stage(global.stage);
-		let currentTheme = themeContext.get_theme();
-		
+
+		// Get CSS of new theme, and check it exists, falling back to 'default'
 		let cssPath = extensionPath + '/themes/' + theme + '/style.css'
 		let cssFile = Gio.file_new_for_path(cssPath);
 		if (!cssFile.query_exists(null)) { cssPath = extensionPath + '/themes/default/style.css' }
+
+		// Reload shell theme with new style
+		
+		let themeContext = St.ThemeContext.get_for_stage(global.stage);
+		let currentTheme = themeContext.get_theme();
 
 		let newTheme = new St.Theme ({application_stylesheet: Main._cssStylesheet});
 		newTheme.load_stylesheet(cssPath);
@@ -101,8 +107,18 @@ WindowButtons.prototype = {
 				}
 			}
 		}
-		
+				
 		themeContext.set_theme(newTheme);
+		
+		// Naughty bit to make "dafault" theme look better
+			//~ for (i in this.leftBox.get_children()) {
+				//~ if (theme == "default") {this.leftBox.get_children()[i].add_style_class_name("panel-button"); } 
+				//~ else { this.leftBox.get_children()[i].remove_style_class_name("panel-button"); }
+			//~ }
+			//~ for (i in this.rightBox.get_children()) {
+				//~ if (theme == "default") {this.rightBox.get_children()[i].add_style_class_name("panel-button"); } 
+				//~ else { this.rightBox.get_children()[i].remove_style_class_name("panel-button"); }
+			//~ }
 	},
 
 	_display: function() {
@@ -135,7 +151,7 @@ WindowButtons.prototype = {
 
 		if (orderRight != "") {
 			for ( let i=0; i<orderRight.length; ++i ) {
-				let button = new St.Button({ style_class: 'window-button ' + orderRight[i] , reactive: true } ); 
+				let button = new St.Button({ style_class: orderRight[i]  + ' window-button' } ); 
 				button.set_tooltip_text( buttonlist[orderRight[i]][0] );
 				button.connect('button-press-event', Lang.bind(this, buttonlist[orderRight[i]][1]));
 				this.rightBox.add(button);
@@ -144,7 +160,7 @@ WindowButtons.prototype = {
 		
 		if (orderLeft != "") {
 			for ( let i=0; i<orderLeft.length; ++i ) {
-				let button = new St.Button({ style_class: 'window-button ' + orderLeft[i] , reactive: true } ); 
+				let button = new St.Button({ style_class: orderLeft[i] + ' window-button' } ); 
 				button.set_tooltip_text( buttonlist[orderLeft[i]][0] );
 				button.connect('button-press-event', Lang.bind(this, buttonlist[orderLeft[i]][1]));
 				this.leftBox.add(button);
