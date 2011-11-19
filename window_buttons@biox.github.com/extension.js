@@ -51,7 +51,8 @@ WindowButtons.prototype = {
 		}
 		
 		//Connect to setting change events
-		this._settings.connect('changed::'+WA_THEME, Lang.bind(this, this._loadTheme));
+		//(changing themes is not working properly yet)
+		//this._settings.connect('changed::'+WA_THEME, Lang.bind(this, this._loadTheme));
 		this._settings.connect('changed::'+WA_ORDER, Lang.bind(this, this._reDisplay));
 		this._settings.connect('changed::'+WA_PINCH, Lang.bind(this, function() { pinch = this._settings.get_enum(WA_PINCH); this._reDisplay(); }))
 
