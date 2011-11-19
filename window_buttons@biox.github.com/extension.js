@@ -87,8 +87,6 @@ WindowButtons.prototype = {
 	
 	_reDisplay: function() {
 		
-		global.log("Redisplaying")
-		
 		let boxes = [ this.leftBox, this.rightBox ]
 		for (box in boxes) {
 			let children = boxes[box].get_children()
