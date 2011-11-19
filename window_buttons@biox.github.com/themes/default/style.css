@@ -1,0 +1,44 @@
+.box-bin { }
+
+.button-box {
+    spacing: 4px;
+}
+
+.window-button {
+    width: 14px;
+    height: 14px;
+    
+    margin: 6px;
+
+    border-width: 2px;
+    border-color: #111;
+    border-style: solid;
+
+    border-radius: 10px;
+    
+    background-gradient-direction: vertical;
+    background-gradient-end: rgba(0,0,0,0.9);
+    
+}
+
+.window-button:hover {
+    background-gradient-end: rgba(100,100,100,0.5);
+    border-color: #333;
+}
+
+.window-button:active {
+    background-gradient-start: rgba(100,100,100,0.5);
+    border-color: #555;
+}
+
+.minimize {
+    background-color: #6BA13F;
+}
+
+.maximize {
+    background-color: #FFA500;
+}
+
+.close {
+    background-color: red;
+}
