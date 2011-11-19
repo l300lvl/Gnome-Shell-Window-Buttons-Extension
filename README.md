@@ -5,6 +5,8 @@ This is an exntesion for Gnome 3 which puts minimize, maximize and close buttons
 
 Supports custom button layouts and css theming!
 
+You have to restart gnome-shell to apply a new theme properly.
+
 To-do
 -----
 
