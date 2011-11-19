@@ -14,13 +14,21 @@ Settings are _org.gnome.shell.extensions.window-buttons_ in **dconf-editor**
 Installation
 ------------
 
-Copy the schema file (org.gnome.shell.extensions.window-buttons.gschema.xml) to _/usr/share/glib-2.0/schemas_
+Copy the schema file to _/usr/share/glib-2.0/schemas_
 
-Run as root:
+	# cp org.gnome.shell.extensions.window-buttons.gschema.xml /usr/share/glib-2.0/schemas
+
+Install schema:
 
 	# glib-compile-schemas /usr/share/glib-2.0/schemas
 
-Copy the **window_buttons@biox.github.com** folder to _~/.local/share/gnome-shell/extensions_ or _/usr/share/gnome-shell/extensions_
+Install the extension itself
+
+	$ cp window_buttons@biox.github.com ~/.local/share/gnome-shell/extensions
+
+or
+
+	# cp window_buttons@biox.github.com /usr/share/gnome-shell/extensions
 
 To-do
 -----
