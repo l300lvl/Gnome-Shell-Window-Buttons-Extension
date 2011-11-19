@@ -117,8 +117,6 @@ WindowButtons.prototype = {
 							maximize : ['Maximize', this._maximize], 
 							close    : ['Close', this._close] } ;
 		
-		
-		
 		let orders = order.split(':')
 		let orderLeft  = orders[0].split(',')
 		let orderRight = orders[1].split(',')
