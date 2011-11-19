@@ -53,11 +53,7 @@ WindowButtons.prototype = {
 		//Connect to setting change events
 		this._settings.connect('changed::'+WA_THEME, Lang.bind(this, this._loadTheme));
 		this._settings.connect('changed::'+WA_ORDER, Lang.bind(this, this._reDisplay));
-		this._settings.connect('changed::'+WA_PINCH, Lang.bind(this, function() {
-			global.log("Order change")
-			pinch = this._settings.get_enum(WA_PINCH);
-			this._reDisplay();
-				}))
+		this._settings.connect('changed::'+WA_PINCH, Lang.bind(this, function() { pinch = this._settings.get_enum(WA_PINCH); this._reDisplay(); }))
 
 		//Create boxes for the buttons
 		this.rightActor = new St.Bin({ style_class: 'box-bin panel-button', reactive: false, track_hover: false });
