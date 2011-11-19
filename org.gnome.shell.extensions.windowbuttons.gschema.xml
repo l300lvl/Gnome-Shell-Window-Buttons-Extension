@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gnome-shell-extensions">
+  <enum id='org.gnome.shell.extensions.window-buttons.side'>
+    <value value='0' nick='left'/>
+    <value value='1' nick='right'/>
+  </enum>
+  
+  <enum id='org.gnome.shell.extensions.window-buttons.pinch'>
+    <value value='0' nick='Custom'/>
+    <value value='1' nick='Mutter'/>
+    <value value='1' nick='Metacity'/>
+  </enum>
+
+  <schema path="/org/gnome/shell/extensions/window-buttons/" id="org.gnome.shell.extensions.window-buttons">
+
+    <key type="s" name="order">
+      <default>":min,max,close"</default>
+      <summary>Button Order</summary>
+      <description>The order of the window buttons (e.g. :min,max,close). Colon represents the shit in the middle.</description>
+    </key>
+
+    <key type="s" name="theme">
+      <default>"default"</default>
+      <summary>Theme</summary>
+      <description>The name of the theme to use</description>
+    </key>
+    
+    <key type="i" name="pinch">
+      <default>0</default>
+      <summary>Use custom button order or the order pinch settings from mutter/metacity</summary>
+    </key>
+
+  </schema>
+</schemalist>

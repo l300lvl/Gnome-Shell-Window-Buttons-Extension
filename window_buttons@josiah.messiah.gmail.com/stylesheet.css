@@ -1,0 +1,46 @@
+.box-bin { }
+
+.button-box {
+    spacing: 2px;
+}
+
+.window-button {
+    width: 24px;
+    height: 24px;
+}
+
+.Minimize {
+    background-image: url("themes/Zukitwo-Dark/minimize_focused_normal.png");
+}
+
+.Minimize:hover {
+    background-image: url("themes/Zukitwo-Dark/minimize_focused_prelight.png");
+}
+
+.Minimize:active {
+    background-image: url("themes/Zukitwo-Dark/minimize_focused_pressed.png");
+}
+
+.Maximize {
+    background-image: url("themes/Zukitwo-Dark/maximize_focused_normal.png");
+}
+
+.Maximize:hover {
+    background-image: url("themes/Zukitwo-Dark/maximize_focused_prelight.png");
+}
+
+.Maximize:active {
+    background-image: url("themes/Zukitwo-Dark/maximize_focused_pressed.png");
+}
+
+.Close {
+    background-image: url("themes/Zukitwo-Dark/close_focused_normal.png");
+}
+
+.Close:hover {
+    background-image: url("themes/Zukitwo-Dark/close_focused_prelight.png");
+}
+
+.Close:active {
+    background-image: url("themes/Zukitwo-Dark/close_focused_pressed.png");
+}
