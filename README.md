@@ -9,7 +9,7 @@ You have to restart gnome-shell to apply a new theme properly.
 
 Currently the buttons only control the active window.
 
-Settings are _org.gnome.shell.extensions.window-buttons_ in **dconf-editor**
+Settings are can be found at _org.gnome.shell.extensions.window-buttons_ in **dconf-editor**
 
 Installation
 ------------
