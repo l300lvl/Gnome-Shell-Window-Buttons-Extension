@@ -35,4 +35,5 @@ To-do
 
 - Add unfocused window support for better theming
 - Add option to handle only maximized windows
+- Add option to hide is there are no maximized windows
 - Moar themes!
