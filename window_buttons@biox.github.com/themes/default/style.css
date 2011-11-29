@@ -1,13 +1,25 @@
 .box-bin { 
+/*
+    background-color: blue;
+*/
+    border-width: 0px;
+    padding: 0px;
+    margin: 0px;
 }
 
 .button-box {
     spacing: 4px;
+/*
+    background-color: green;
+*/
 }
 
 .window-button {
     width: 24px;
     height: 20px;
+/*
+    background-color: red;
+*/
 }
 
 .window-button:hover {

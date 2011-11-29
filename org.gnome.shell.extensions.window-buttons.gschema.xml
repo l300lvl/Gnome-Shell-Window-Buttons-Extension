@@ -33,5 +33,17 @@
       <description>Try to use the theme with the same name as the current gtk theme</description>
     </key>
     
+    <key type="b" name="onlymax">
+      <default>false</default>
+      <summary>Control only maximized windows</summary>
+      <description>Prioritise controlling windows which are maximized.</description>
+    </key>
+    
+    <key type="b" name="hideonnomax">
+      <default>false</default>
+      <summary>Hide if there are no maximized windows</summary>
+      <description>Hide the window buttons if there are no maximized windows to control. Only works if controling only maximized windows. Only has any effect is the 'onlymax' option is set.</description>
+    </key>
+    
   </schema>
 </schemalist>
