@@ -32,6 +32,18 @@
       <summary>Match gtk theme if possible</summary>
       <description>Try to use the theme with the same name as the current gtk theme</description>
     </key>
+
+    <key type="i" name="leftpos">
+      <default>0</default>
+      <summary>Left Position</summary>
+      <description>How far left should the left-hand buttons be placed. 0 = furthest left.</description>
+    </key>
+
+    <key type="i" name="rightpos">
+      <default>0</default>
+      <summary>Right Position</summary>
+      <description>How far right should the right-hand buttons be placed. 0 = furthest right.</description>
+    </key>
     
     <key type="b" name="onlymax">
       <default>false</default>
