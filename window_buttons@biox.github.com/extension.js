@@ -3,7 +3,6 @@
 
 const Lang = imports.lang;
 const St = imports.gi.St;
-const Wnck = imports.gi.Wnck;
 const Main = imports.ui.main;
 const Gio = imports.gi.Gio;
 const GConf = imports.gi.GConf;
@@ -219,9 +218,9 @@ __proto__: PanelMenu.ButtonBox.prototype,
             let uppermost = winactors[winactors.length-1].get_meta_window()
             uppermost.minimize()
         } else {
-            // If the active window is minimize, close it
+            // If the active window is maximized, minimize it
             if (activeWindow.get_maximized()){
-                activeWindow.delete(global.get_current_time());
+                activeWindow.minimize();
             // If the active window is not maximized, minimize the uppermost 
             // maximized window if the option to only control maximized windows is set
             } else if (onlymax) {
